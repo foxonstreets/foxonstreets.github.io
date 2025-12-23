@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoxonStreets - Fotografia</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background: #fff;
+            color: #222;
+            line-height: 1.6;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid #eee;
+        }
+
+        .logo {
+            font-size: 18px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: #222;
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: 1px;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.6;
+        }
+
+        section {
+            padding: 100px 40px 60px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        #home {
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: 300;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: #666;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        h2 {
+            font-size: 32px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-bottom: 50px;
+            text-align: center;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .photo-container {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 4/3;
+            background: #f5f5f5;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .photo-container:hover {
+            transform: scale(1.02);
+        }
+
+        .photo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .about-content {
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .about-content p {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+
+        .contact-content {
+            max-width: 500px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .contact-info {
+            margin-top: 40px;
+        }
+
+        .contact-info a {
+            display: block;
+            color: #222;
+            text-decoration: none;
+            margin: 15px 0;
+            font-size: 16px;
+            transition: opacity 0.3s;
+        }
+
+        .contact-info a:hover {
+            opacity: 0.6;
+        }
+
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 90%;
+            max-height: 90%;
+        }
+
+        .lightbox img {
+            max-width: 100%;
+            max-height: 85vh;
+            object-fit: contain;
+        }
+
+        .lightbox-caption {
+            color: white;
+            font-size: 16px;
+            margin-top: 20px;
+            text-align: center;
+            letter-spacing: 1px;
+            font-weight: 300;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            color: white;
+            font-size: 40px;
+            cursor: pointer;
+            font-weight: 300;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 15px 20px;
+            }
+
+            .nav-links {
+                gap: 15px;
+            }
+
+            section {
+                padding: 80px 20px 40px;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+
+            .gallery {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .lightbox-caption {
+                font-size: 14px;
+                margin-top: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">FoxonStreets</div>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#portfolio">Portfolio</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contatti</a>
+        </div>
+    </nav>
+
+    <section id="home">
+        <h1>FOXONSTREETS</h1>
+        <p class="subtitle">FOTOGRAFIA DI STRADA</p>
+    </section>
+
+    <section id="portfolio">
+        <h2>Portfolio</h2>
+        <div class="gallery">
+            <div class="photo-container">
+                <img src="images/foto1.jpg" alt="Donne in protesta">
+            </div>
+            <div class="photo-container">
+                <img src="images/foto2.jpg" alt="Dias de los muertos">
+            </div>
+            <div class="photo-container">
+                <img src="images/foto3.jpg" alt="Focus">
+            </div>
+            <div class="photo-container">
+                <img src="images/foto4.jpg" alt="Volontari Meda">
+            </div>
+            <div class="photo-container">
+                <img src="images/foto5.jpg" alt="Volontari Meda">
+            </div>
+            <div class="photo-container">
+                <img src="images/foto6.jpg" alt="Madre e figlio Meda">
+            </div>
+            <div class="photo-container">
+                <img src="images/foto7.jpg" alt="Marocco national team">
+            </div>
+            <div class="photo-container">
+                <img src="images/foto8.jpg" alt="Inter campione">
+            </div>
+            <div class="photo-container">
+                <img src="images/foto9.jpg" alt="Tifo">
+            </div>
+        </div>
+    </section>
+
+    <section id="about">
+        <h2>About</h2>
+        <div class="about-content">
+            <p>Mi chiamo Nicola, grazie ai grandi maestri mi sono appassionato alla fotografia analogica. La prima ispiratrice è stata Vivian Maier, poi sono arrivati Elliott Erwitt e Letizia Battaglia.</p>
+            <p>Con la fotografia analogica provo a sperimentare con nuove pellicole e vecchie fotocamere, tuttavia non disprezzo la fotografia digitale.</p>
+            <p>Lavoro principalmente come street photographers, amo il reportage, le fotografie di automobili e vorrei sperimentare con la fotografia sportiva.</p>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2>Contatti</h2>
+        <div class="contact-content">
+            <p>Interessato a collaborare o acquistare stampe?<br>Contattami attraverso uno dei seguenti canali:</p>
+            <div class="contact-info">
+                <a href="mailto:foxonstreets@gmail.com">foxonstreets@gmail.com</a>
+                <a href="https://www.instagram.com/foxonstreets/" target="_blank">Instagram</a>
+            </div>
+        </div>
+    </section>
+
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <div class="lightbox-content">
+            <img id="lightbox-img" src="" alt="">
+            <p class="lightbox-caption" id="lightbox-caption"></p>
+        </div>
+    </div>
+
+    <script>
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                target.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // Lightbox
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxCaption = document.getElementById('lightbox-caption');
+        const photos = document.querySelectorAll('.photo-container img');
+
+        photos.forEach(photo => {
+            photo.addEventListener('click', () => {
+                lightboxImg.src = photo.src;
+                lightboxCaption.textContent = photo.alt;
+                lightbox.classList.add('active');
+            });
+        });
+
+        lightbox.addEventListener('click', () => {
+            lightbox.classList.remove('active');
+        });
+    </script>
+</body>
+</html>
