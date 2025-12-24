@@ -203,6 +203,32 @@
             font-size: 40px;
             cursor: pointer;
             font-weight: 300;
+            z-index: 2001;
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 50px;
+            cursor: pointer;
+            font-weight: 300;
+            padding: 20px;
+            user-select: none;
+            transition: opacity 0.3s;
+        }
+
+        .lightbox-nav:hover {
+            opacity: 0.6;
+        }
+
+        .lightbox-prev {
+            left: 20px;
+        }
+
+        .lightbox-next {
+            right: 20px;
         }
 
         @media (max-width: 768px) {
@@ -231,6 +257,19 @@
                 font-size: 14px;
                 margin-top: 15px;
             }
+
+            .lightbox-nav {
+                font-size: 35px;
+                padding: 15px;
+            }
+
+            .lightbox-prev {
+                left: 10px;
+            }
+
+            .lightbox-next {
+                right: 10px;
+            }
         }
     </style>
 </head>
@@ -254,31 +293,31 @@
         <h2>Portfolio</h2>
         <div class="gallery">
             <div class="photo-container">
-                <img src="images/foto1.jpg" alt="Donne in protesta, Analogico, Milano, Novembre 2023">
+                <img src="images/foto1.jpg" alt="Donne in protesta">
             </div>
             <div class="photo-container">
-                <img src="images/foto2.jpg" alt="Dias de los muertos, Analogico, Milano, Novembre 2024">
+                <img src="images/foto2.jpg" alt="Dias de los muertos">
             </div>
             <div class="photo-container">
-                <img src="images/foto3.jpg" alt="Focus, Analogico, Milano, Aprile 2024">
+                <img src="images/foto3.jpg" alt="Focus">
             </div>
             <div class="photo-container">
-                <img src="images/foto4.jpg" alt="Volontari, Digitale, Alluvione Meda, Settembre 2025">
+                <img src="images/foto4.jpg" alt="Volontari Meda">
             </div>
             <div class="photo-container">
-                <img src="images/foto5.jpg" alt="Volontari, Digitale, Alluvione Meda, Settembre 2025">
+                <img src="images/foto5.jpg" alt="Volontari Meda">
             </div>
             <div class="photo-container">
-                <img src="images/foto6.jpg" alt="Madre e figlio, Digitale, Alluvione Meda, Settembre 2025">
+                <img src="images/foto6.jpg" alt="Madre e figlio Meda">
             </div>
             <div class="photo-container">
-                <img src="images/foto7.jpg" alt="Marocco national team, Analogico, Milano, Dicembre 2022">
+                <img src="images/foto7.jpg" alt="Marocco national team">
             </div>
             <div class="photo-container">
-                <img src="images/foto8.jpg" alt="Inter campione, Analogico, Milano, Aprile 2024">
+                <img src="images/foto8.jpg" alt="Inter campione">
             </div>
             <div class="photo-container">
-                <img src="images/foto9.jpg" alt="Tifo, Analogico, Milano, Dicembre 2022">
+                <img src="images/foto9.jpg" alt="Tifo">
             </div>
         </div>
     </section>
@@ -305,6 +344,8 @@
 
     <div class="lightbox" id="lightbox">
         <span class="lightbox-close">&times;</span>
+        <span class="lightbox-nav lightbox-prev">&#8249;</span>
+        <span class="lightbox-nav lightbox-next">&#8250;</span>
         <div class="lightbox-content">
             <img id="lightbox-img" src="" alt="">
             <p class="lightbox-caption" id="lightbox-caption"></p>
@@ -325,21 +366,61 @@
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightbox-img');
         const lightboxCaption = document.getElementById('lightbox-caption');
+        const lightboxPrev = document.querySelector('.lightbox-prev');
+        const lightboxNext = document.querySelector('.lightbox-next');
         const photos = document.querySelectorAll('.photo-container img');
+        let currentIndex = 0;
 
-        photos.forEach(photo => {
+        function showPhoto(index) {
+            currentIndex = index;
+            lightboxImg.src = photos[currentIndex].src;
+            lightboxCaption.textContent = photos[currentIndex].alt;
+        }
+
+        photos.forEach((photo, index) => {
             photo.addEventListener('click', () => {
-                lightboxImg.src = photo.src;
-                lightboxCaption.textContent = photo.alt;
+                showPhoto(index);
                 lightbox.classList.add('active');
             });
         });
 
-        lightbox.addEventListener('click', () => {
+        lightboxPrev.addEventListener('click', (e) => {
+            e.stopPropagation();
+            currentIndex = (currentIndex - 1 + photos.length) % photos.length;
+            showPhoto(currentIndex);
+        });
+
+        lightboxNext.addEventListener('click', (e) => {
+            e.stopPropagation();
+            currentIndex = (currentIndex + 1) % photos.length;
+            showPhoto(currentIndex);
+        });
+
+        // Chiudi lightbox
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                lightbox.classList.remove('active');
+            }
+        });
+
+        document.querySelector('.lightbox-close').addEventListener('click', () => {
             lightbox.classList.remove('active');
+        });
+
+        // Navigazione con tastiera
+        document.addEventListener('keydown', (e) => {
+            if (!lightbox.classList.contains('active')) return;
+            
+            if (e.key === 'ArrowLeft') {
+                currentIndex = (currentIndex - 1 + photos.length) % photos.length;
+                showPhoto(currentIndex);
+            } else if (e.key === 'ArrowRight') {
+                currentIndex = (currentIndex + 1) % photos.length;
+                showPhoto(currentIndex);
+            } else if (e.key === 'Escape') {
+                lightbox.classList.remove('active');
+            }
         });
     </script>
 </body>
-
 </html>
-
